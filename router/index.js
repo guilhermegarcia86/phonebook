@@ -1,38 +1,39 @@
 const router = require('express').Router()
-const {create, getBy, getAll, patch, deleteBy, put} = require('../service')
+const {create, getById, getAll, remove, put} = require('../service')
 
 router.post('/', (req, res) => {
     const contact = req.body
 
     create(contact)
 
-    res.status(201).json(pulgPag)
+    res.status(201).json(contact)
 })
 
-router.get('/:name', (req, res) => {
+router.get('/:id', (req, res) => {
 
-    const name = req.params.name
+    const id = req.params.id
 
-    const result = getBy(name)
-
-    res.status(200).json(result)
+    const result = getById(id)
+    if(result !== undefined){
+        res.status(200).json(result)
+        return
+    }
+    
+    res.sendStatus(204)
+    
 })
 
-router.get('/all', (req, res) => {
+router.get('/', (req, res) => {
 
     const result = getAll()
 
-    res.status(200).json(result)
-})
+    if(result.length > 0){
+        res.status(200).json(result)
+        return
+    }
 
-router.patch("/:id", (req, res) => {
-
-    const id = req.params.id
-    const body = req.body
-
-    patch(id, body)
-
-    res.status(204)
+    res.sendStatus(204)
+    
 })
 
 router.put("/:id", (req, res) => {
@@ -40,18 +41,18 @@ router.put("/:id", (req, res) => {
     const id = req.params.id
     const body = req.body
 
-    put(id, body)
+    const result = put(id, body)
 
-    res.status(204)
+    res.status(200).json(result)
 })
 
 router.delete("/:id", (req, res) => {
 
     const id = req.params.id
 
-    deleteBy(id)
+    remove(id)
 
-    res.status(204)
+    res.sendStatus(204)
 })
 
 router.get('/health', (req, res) => {

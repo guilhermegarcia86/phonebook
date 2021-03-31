@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js",
+    "start": "node index.js",
+    "dev": "nodemon index.js",
     "test": "jest --coverage --runInBand"
   },
   "repository": {
@@ -20,7 +21,6 @@
   "homepage": "https://github.com/guilhermegarcia86/phonebook#readme",
   "dependencies": {
     "body-parser": "^1.19.0",
-    "bunyan": "^1.8.15",
     "express": "^4.17.1"
   },
   "devDependencies": {

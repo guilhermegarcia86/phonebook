@@ -1,26 +1,22 @@
 const Contact = require('../model')
-const Repository = require('../repository')
+const {insert, selectAll, selectById, update, remove} = require('../repository')
 
 exports.create = (body) => {
-
+    insert(body)
 }
 
-exports.getBy = (name) => {
-    
+exports.getById = (id) => {
+    return selectById(parseInt(id, 2))
 }
 
 exports.getAll = () => {
-    
-}
-
-exports.patch = (id, body) => {
-    
+    return selectAll()
 }
 
 exports.put = (id, body) => {
-    
+    return update(parseInt(id, 2), body)
 }
 
-exports.deleteBy = (id) => {
-    
+exports.remove = (id) => {
+    remove(parseInt(id, 2))
 }
