@@ -1,33 +1,40 @@
-let _data = []
+class InMemoryRepository{
 
-exports.insert = (contact) => {
-    _data.push(contact)
+    constructor(){
+        this._data = []
+    }
+
+    insert(contact){
+        this._data.push(contact)
+    }
+    
+    selectAll(){
+        return this._data
+    }
+    
+    selectById(id){
+        return this._data.find(c => c.id === id)
+    }
+    
+    update(id, contact){
+    
+        const elementId = this._data.findIndex(element => element.id === id);
+        contact.id = id
+    
+        const updateContact = Object.assign(this._data[elementId], contact)
+    
+        this._data[elementId] = updateContact
+    
+        return this._data[elementId]
+    }
+    
+    remove(id){
+    
+        const index = this._data.findIndex(element => element.id === id)
+    
+        this._data.splice(index, 1)
+    
+    }
 }
 
-exports.selectAll = () => {
-    return _data
-}
-
-exports.selectById = (id) => {
-    return _data.find(c => c.id === id)
-}
-
-exports.update = (id, contact) => {
-
-    const elementId = _data.findIndex(element => element.id === id);
-    contact.id = id
-
-    const updateContact = Object.assign(_data[elementId], contact)
-
-    _data[elementId] = updateContact
-
-    return _data[elementId]
-}
-
-exports.remove = (id) => {
-
-    const index = _data.findIndex(element => element.id === id)
-
-    _data.splice(index, 1)
-
-}
+module.exports = InMemoryRepository
