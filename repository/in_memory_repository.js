@@ -12,14 +12,13 @@ class InMemoryRepository{
         return this._data
     }
     
-    selectById(id){
-        return this._data.find(c => c.id === id)
+    selectById(name){
+        return this._data.find(c => c.name === name)
     }
     
-    update(id, contact){
+    update(name, contact){
     
-        const elementId = this._data.findIndex(element => element.id === id);
-        contact.id = id
+        const elementId = this._data.findIndex(element => element.name === name);
     
         const updateContact = Object.assign(this._data[elementId], contact)
     
@@ -28,9 +27,9 @@ class InMemoryRepository{
         return this._data[elementId]
     }
     
-    remove(id){
+    remove(name){
     
-        const index = this._data.findIndex(element => element.id === id)
+        const index = this._data.findIndex(element => element.name === name)
     
         this._data.splice(index, 1)
     

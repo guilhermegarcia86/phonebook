@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+
+  node:
+    container_name: node
+    build: '.'
+    volumes:
+      - ./:/node-app
+      - ./node_modules:/node-app/node_modules
+    depends_on: 
+      - mongo
+    links: 
+      - mongo
+    ports: 
+      - '3000:3000'
+
+  mongo:
+    image: mongo
+    container_name: mongo
+    ports:
+      - 27017:27017

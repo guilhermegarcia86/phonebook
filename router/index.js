@@ -1,9 +1,16 @@
 const router = require('express').Router()
-const InMemoryRepository = require('../repository')
+const InMemoryRepository = require('../repository/in_memory_repository.js')
+const MongoRepository = require('../repository/mongo_repository.js')
 const Service = require('../service')
-const service = new Service(new InMemoryRepository())
+const service = new Service(new MongoRepository('mongodb://localhost:27017/phonebook'))
+//const service = new Service(new InMemoryRepository())
 
-router.post('/', (req, res) => {
+router.param('name', (req, res, next, name) => {
+    req.name_from_param = name
+    next()
+})
+
+router.post('/', async (req, res) => {
     const contact = req.body
 
     service.create(contact)
@@ -11,11 +18,16 @@ router.post('/', (req, res) => {
     res.status(201).json(contact)
 })
 
-router.get('/:id', (req, res) => {
+router.get('/health', (req, res) => {
 
-    const id = req.params.id
+    res.status(200).json({status: "Ok"})
+})
 
-    const result = service.getById(id)
+router.get('/:name', async (req, res) => {
+
+    const id = req.name_from_param
+
+    const result = await service.getById(id)
     if(result !== undefined){
         res.status(200).json(result)
         return
@@ -25,9 +37,9 @@ router.get('/:id', (req, res) => {
     
 })
 
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
 
-    const result = service.getAll()
+    const result = await service.getAll()
 
     if(result.length > 0){
         res.status(200).json(result)
@@ -38,28 +50,23 @@ router.get('/', (req, res) => {
     
 })
 
-router.put("/:id", (req, res) => {
+router.put("/:id", async (req, res) => {
 
     const id = req.params.id
     const body = req.body
 
-    const result = service.put(id, body)
+    const result = await service.put(id, body)
 
     res.status(200).json(result)
 })
 
-router.delete("/:id", (req, res) => {
+router.delete("/:id", async (req, res) => {
 
     const id = req.params.id
 
     service.remove(id)
 
     res.sendStatus(204)
-})
-
-router.get('/health', (req, res) => {
-
-    res.status(200).json({status: "Ok"})
 })
 
 router.options('/', (req, res) => {

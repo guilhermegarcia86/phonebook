@@ -10,20 +10,20 @@ class Service{
         this.repository.insert(body)
     }
     
-    getById(id){
-        return this.repository.selectById(parseInt(id, 2))
+    getById(name){
+        return this.repository.selectById(name)
     }
     
     getAll(){
         return this.repository.selectAll()
     }
     
-    put(id, body){
-        return this.repository.update(parseInt(id, 2), body)
+    put(name, body){
+        return this.repository.update(name, body)
     }
     
-    remove(id){
-        this.repository.remove(parseInt(id, 2))
+    remove(name){
+        this.repository.remove(name)
     }
 
 }
