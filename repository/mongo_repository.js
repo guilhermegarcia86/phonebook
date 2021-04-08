@@ -5,24 +5,20 @@ class MongoRepository{
     constructor(connectionString){
         this.connectionString = connectionString
         this.contactCollection = null
-
-        this._connect(this.connectionString)
     }
 
-    _connect(connectionString){
+    async init(){
+        await this._connect(this.connectionString)
+    }
 
-        MongoClient.connect(connectionString, {useUnifiedTopology: true})
-        .then(client => {
-            console.log('Connected to Database')
-            const db = client.db('phonebook')
-            this.contactCollection = db.collection('contact')
-        })
-        .catch(error => {
-            console.error(error)
-            throw new Error(error)
-        })
-    
+    async _connect(connectionString){
+
+        const client = await MongoClient.connect(connectionString, {useUnifiedTopology: true})
+        const db = client.db('phonebook')
+        this.contactCollection = db.collection('contact')
+
         return this.contactCollection
+
 
     }
 
@@ -58,7 +54,7 @@ class MongoRepository{
     
     remove(name){
         this.contactCollection.deleteOne({name: name})
-        .then(result => console.log(result))
+        .then(result => console.log(result.result))
         .catch(err => {throw new Error(err)})
     }
 }
