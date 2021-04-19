@@ -21,6 +21,10 @@ class Service{
     put(name, body){
         return this.repository.update(name, body)
     }
+
+    patch(name, body){
+        return this.repository.patch(name, body);
+    }
     
     remove(name){
         this.repository.remove(name)

@@ -1,11 +1,9 @@
 const router = require('express').Router()
-const InMemoryRepository = require('../repository/in_memory_repository.js')
 const MongoRepository = require('../repository/mongo_repository.js')
 const Service = require('../service')
-const MongoRepo = new MongoRepository('mongodb://localhost:27017/phonebook')
+const MongoRepo = new MongoRepository('mongodb://admin:password@localhost:27017')
 MongoRepo.init()
 const service = new Service(MongoRepo)
-//const service = new Service(new InMemoryRepository())
 
 router.param('name', (req, res, next, name) => {
     req.name_from_param = name
@@ -60,6 +58,16 @@ router.put("/:name", async (req, res) => {
     const result = await service.put(name, body)
 
     res.status(200).json(result)
+})
+
+router.patch("/:name", async (req, res) => {
+
+    const name = req.params.name
+    const body = req.body
+
+    service.patch(name, body)
+
+    res.sendStatus(204)
 })
 
 router.delete("/:name", async (req, res) => {
