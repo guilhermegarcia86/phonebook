@@ -7,19 +7,36 @@ class Service{
     }
 
     create(body){
-        this.repository.insert(body)
+        const contact = new Contact(body.name, body.telephone, body.address)
+        this.repository.insert(contact)
     }
     
-    getById(name){
-        return this.repository.selectById(name)
+    async getById(name){
+        const contact = await this.repository.selectById(name)
+
+        return new Contact(contact.name, contact.telephone, contact.address)
     }
     
-    getAll(){
-        return this.repository.selectAll()
+    async getAll(){
+        const contactList = await this.repository.selectAll()
+
+        const result = contactList.map((contact) => {
+            return new Contact(contact.name, contact.telephone, contact.address)
+        })
+
+        return result
     }
     
-    put(name, body){
-        return this.repository.update(name, body)
+    async put(name, body){
+        const contact = await this.repository.update(name, new Contact(body.name, body.telephone, body.address))
+
+        const result = contact.value
+
+        return new Contact(result.name, result.telephone, result.address)
+    }
+
+    async patch(name, body){
+        return this.repository.patch(name, body);
     }
     
     remove(name){

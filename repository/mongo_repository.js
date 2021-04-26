@@ -51,6 +51,15 @@ class MongoRepository{
             }    
         )
     }
+
+    async patch(name, contact){
+
+        return await Object.entries(contact).map(([key, value]) => {
+            let obj = {}
+            obj[key] = value
+            return this.contactCollection.findOneAndUpdate({name: name}, {$set: contact})
+        })
+    }
     
     remove(name){
         this.contactCollection.deleteOne({name: name})
