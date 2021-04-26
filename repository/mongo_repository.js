@@ -57,7 +57,7 @@ class MongoRepository{
         return await Object.entries(contact).map(([key, value]) => {
             let obj = {}
             obj[key] = value
-            return this.contactCollection.findOneAndUpdate({name: name}, {$set: obj})
+            return this.contactCollection.findOneAndUpdate({name: name}, {$set: contact})
         })
     }
     

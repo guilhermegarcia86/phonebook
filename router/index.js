@@ -4,13 +4,15 @@ const Service = require('../service')
 const MongoRepo = new MongoRepository('mongodb://admin:password@localhost:27017')
 MongoRepo.init()
 const service = new Service(MongoRepo)
+const { celebrate, Segments } = require('celebrate')
+const validation = require('../validation')
 
 router.param('name', (req, res, next, name) => {
     req.name_from_param = name
     next()
 })
 
-router.post('/', async (req, res) => {
+router.post('/', celebrate({[Segments.BODY]: validation.bodySchema }), async (req, res) => {
     const contact = req.body
 
     service.create(contact)
@@ -23,7 +25,7 @@ router.get('/health', (req, res) => {
     res.status(200).json({status: "Ok"})
 })
 
-router.get('/:name', async (req, res) => {
+router.get('/:name', celebrate({[Segments.PARAMS]: validation.pathParam }), async (req, res) => {
 
     const id = req.name_from_param
 
@@ -50,7 +52,7 @@ router.get('/', async (req, res) => {
     
 })
 
-router.put("/:name", async (req, res) => {
+router.put("/:name", celebrate({[Segments.PARAMS]: validation.pathParam }), async (req, res) => {
 
     const name = req.params.name
     const body = req.body
@@ -60,7 +62,7 @@ router.put("/:name", async (req, res) => {
     res.status(200).json(result)
 })
 
-router.patch("/:name", async (req, res) => {
+router.patch("/:name", celebrate({[Segments.PARAMS]: validation.pathParam }), async (req, res) => {
 
     const name = req.params.name
     const body = req.body
@@ -70,7 +72,7 @@ router.patch("/:name", async (req, res) => {
     res.sendStatus(204)
 })
 
-router.delete("/:name", async (req, res) => {
+router.delete("/:name", celebrate({[Segments.PARAMS]: validation.pathParam }), async (req, res) => {
 
     const name = req.params.name
 
