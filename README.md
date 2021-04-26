@@ -1,6 +1,6 @@
 # phonebook
 
-Projeto usado no artigo: 
+Projeto usado nos artigos: 
 - [Construindo uma API REST do zero usando NodeJS com Express](https://programadev.com.br/express-rest-I/)
 - [Conectando uma aplicação web ao MongoDB](https://programadev.com.br/express-rest-db/)
 
